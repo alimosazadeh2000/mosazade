@@ -153,7 +153,7 @@ footer{text-align:center;color:var(--muted);padding:0 0 100px;font-size:.9rem}
 /* reviews */
 .rvw{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
 .rvw blockquote{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;color:var(--ink)}
-.rvw blockquote:nth-child(odd){background:var(--blush)}
+
 .rvw cite{display:block;margin-top:12px;font-style:normal;font-weight:800;color:var(--green)}
 /* posts */
 .posts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:22px}
@@ -201,11 +201,42 @@ footer{text-align:center;color:var(--muted);padding:0 0 100px;font-size:.9rem}
 .artbox .posts{grid-template-columns:1fr}
 @media(max-width:820px){.artbox{grid-template-columns:1fr}.artimg img{aspect-ratio:4/3;object-fit:cover;object-position:top}}
 img{max-width:100%}
+
+/* ===== کارت‌های پاستلی روشن روی پس‌زمینه‌ی سبز تیره ===== */
+.field,.svc,.svc div,.pkc:not(.top),.rvw blockquote,.team div,.posts a,.strip .wrap div,.drawer a,.why div,details,.finder,.frm{
+ --cream:#fcf8f0;--paper:#fffdf8;--green:#1f5b4b;--sage:#7fa383;--mint:#e4efe3;--pink:#f4b3c0;--blush:#fde8ec;--ink:#24342f;--muted:#566860;--line:rgba(31,91,75,.14);color:var(--ink)}
+:is(.fields,.pk,.rvw,.team,.posts,.strip .wrap,.drawer nav,.why,.svc)>*:nth-child(5n+1){background:#e4efe3}
+:is(.fields,.pk,.rvw,.team,.posts,.strip .wrap,.drawer nav,.why,.svc)>*:nth-child(5n+2){background:#fde8ec}
+:is(.fields,.pk,.rvw,.team,.posts,.strip .wrap,.drawer nav,.why,.svc)>*:nth-child(5n+3){background:#fff3d6}
+:is(.fields,.pk,.rvw,.team,.posts,.strip .wrap,.drawer nav,.why,.svc)>*:nth-child(5n+4){background:#ebe6f6}
+:is(.fields,.pk,.rvw,.team,.posts,.strip .wrap,.drawer nav,.why,.svc)>*:nth-child(5n){background:#e1eef6}
+details:nth-of-type(odd){background:#e4efe3}details:nth-of-type(even){background:#fff3d6}
+.finder{background:#fffdf8}.frm{background:#fffdf8}
+.strip .wrap{background:none!important;border:0!important;padding:0!important}
+.svc{border:0;background:none}.svc div{border:0;margin:0}
+.pk .pkc.top{background:var(--green)!important}
+.drawer a{border:0}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.why div{padding:24px;border-radius:var(--r)}.why i{font-style:normal;font-size:2rem;display:block}
+.why h3{color:var(--green);font-size:1.05rem}.why p{color:var(--muted);font-size:.9rem;line-height:1.8}
+.artimg img{aspect-ratio:auto!important;object-fit:contain!important;height:auto!important}
+@media(max-width:820px){.artimg img{max-width:460px;margin:0 auto}}
+#prog{position:fixed;top:0;right:0;height:3px;width:0;background:var(--gold);z-index:70}
+.totop{position:fixed;right:14px;bottom:24px;z-index:55;width:46px;height:46px;border-radius:50%;border:0;background:var(--green);color:var(--cream);font-size:1.3rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+.totop.show{opacity:1;pointer-events:auto}
+@media(max-width:820px){.totop{bottom:90px}}
+.tabbar a.on:not(.go){color:var(--green);background:var(--mint)}
+.ft{padding:50px 0 100px;border-top:1px solid var(--line);color:var(--muted);text-align:right}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:26px}
+.ft b{display:block;color:var(--green);margin-bottom:6px}
+.ft a{display:block;padding:2px 0}.ft a:hover{color:var(--green)}
+.ft .cp{text-align:center;margin-top:30px;font-size:.88rem}
 </style>
 </head>
 <body>
+<div id="top"></div><div id="prog"></div>
 
-<header id="top">
+<header>
   <div class="wrap nav">
     <a class="brand" href="#top"><img src="logo.jpg" alt="لوگوی موسی‌زاده"><span>موسی‌زاده</span></a>
     <nav class="links" aria-label="منوی اصلی">
@@ -245,6 +276,12 @@ img{max-width:100%}
     <div><b>دانشگاه تهران</b><span>همراهی دانشجویان دندان‌پزشکی و مهندسی</span></div>
   </div>
 </section>
+
+<section id="why"><div class="wrap rv"><h2>چرا موسی‌زاده؟</h2><p class="lead">چیزهایی که در مشاوره‌ی ما فرق می‌کند.</p>
+<div class="why"><div><i>🗓️</i><h3>برنامه‌ی اختصاصی</h3><p>برنامه برای هر دانش‌آموز جدا نوشته می‌شود.</p></div>
+<div><i>🎓</i><h3>همراهی دانشجویان تهران</h3><p>دانشجویان دندان‌پزشکی و مهندسی دانشگاه تهران کنارت هستند.</p></div>
+<div><i>📈</i><h3>پیگیری و بازبینی</h3><p>برنامه با پیشرفت تو به‌روز می‌شود.</p></div>
+<div><i>💬</i><h3>پشتیبانی</h3><p>سؤالاتت را مستقیم در تلگرام می‌پرسی.</p></div></div></div></section>
 
 <section id="finder">
   <div class="wrap rv">
@@ -394,8 +431,14 @@ img{max-width:100%}
 </section>
 </main>
 
-<footer>© موسی‌زاده، مشاوره تحصیلی و کنکور · mosazade.ir</footer>
+<footer class="ft"><div class="wrap fgrid">
+<div><b>موسی‌زاده</b><p>مشاوره تحصیلی و کنکور، مسیر درست، پیشرفت واقعی.</p></div>
+<div><b>بخش‌ها</b><a href="#packages">پکیج‌ها</a><a href="#services">خدمات</a><a href="#reviews">نظرات</a><a href="#faq">سؤالات رایج</a></div>
+<div><b>مقالات</b><a href="/blog/barnamerizi-konkur-tajrobi/">برنامه‌ریزی کنکور تجربی</a><a href="/blog/chetor-pezeshki-ghabool-shavim/">چطور پزشکی قبول شویم</a><a href="/blog/moshavere-konkur-mohandesi/">مشاوره کنکور مهندسی</a><a href="/blog/">همه‌ی مقاله‌ها</a></div>
+<div><b>ارتباط</b><a href="https://t.me/moshaver_tahsiil" target="_blank" rel="noopener">@moshaver_tahsiil</a><a href="https://t.me/moshaver_mosazadeh" target="_blank" rel="noopener">کانال تلگرام</a></div>
+</div><p class="cp">© موسی‌زاده، مشاوره تحصیلی و کنکور</p></footer>
 <nav class="tabbar" aria-label="دسترسی سریع"><a href="#top"><i>🏠</i>خانه</a><a href="#packages"><i>🎁</i>پکیج‌ها</a><a href="#reviews"><i>💬</i>نظرات</a><a href="#posts"><i>📣</i>کانال</a><a class="go" href="#contact"><i>✈️</i>مشاوره</a></nav>
+<button class="totop" id="totop" aria-label="بازگشت به بالا">↑</button>
 <a class="fab" href="https://t.me/moshaver_tahsiil" target="_blank" rel="noopener" aria-label="پیام در تلگرام">✈️ مشاوره در تلگرام</a>
 
 <script>
@@ -459,6 +502,20 @@ dw.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>tg(false)));
 document.getElementById('frm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);
  const m='سلام، من '+f.get('n')+' هستم. پایه: '+f.get('p')+'، رشته: '+f.get('g')+'. درخواست: '+f.get('k')+'.'+(f.get('t')?' هدفم: '+f.get('t')+'.':'');
  open('https://t.me/moshaver_tahsiil?text='+encodeURIComponent(m),'_blank','noopener')});
+
+/* خانه، پیشرفت اسکرول، بازگشت به بالا، تب فعال */
+const toTop=e=>{e&&e.preventDefault();scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'','/')};
+document.querySelectorAll('a[href="#top"]').forEach(a=>a.addEventListener('click',toTop));
+document.getElementById('totop').addEventListener('click',toTop);
+const prog=document.getElementById('prog'),tt=document.getElementById('totop');
+const tabs=[...document.querySelectorAll('.tabbar a:not(.go)')];
+const order=['packages','reviews','articles','posts'];
+function spy(){const h=document.documentElement;prog.style.width=(scrollY/(h.scrollHeight-innerHeight||1)*100)+'%';
+ tt.classList.toggle('show',scrollY>700);let cur='top';
+ order.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<innerHeight*.45)cur=id});
+ if(cur==='articles')cur='posts';
+ tabs.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur))}
+addEventListener('scroll',spy,{passive:true});spy();
 </script>
 </body>
 </html>
