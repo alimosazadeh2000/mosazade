@@ -1,3 +1,5 @@
+import POSTS from "./posts.json";
+
 const CHANNEL = "moshaver_mosazadeh";
 
 const decode = (s) => s
@@ -31,10 +33,43 @@ async function posts() {
   }
 }
 
+// سه پست در روز: ۸:۳۰، ۱۴:۰۰ و ۲۱:۰۰ به وقت تهران
+const SLOTS = { "0 5 * * *": 0, "30 10 * * *": 1, "30 17 * * *": 2 };
+const SITE = "https://alimosazade.ir";
+
+function pick(slot, i) {
+  if (i !== null && i !== "" && !isNaN(Number(i))) return POSTS[Number(i) % POSTS.length];
+  const day = Math.floor(Date.now() / 86400000);
+  return POSTS[(day * 3 + slot) % POSTS.length];
+}
+
+async function send(env, post) {
+  const kb = [[{ text: "📩 مشاوره در تلگرام", url: "https://t.me/moshaver_tahsiil" }]];
+  if (post.link) kb.unshift([{ text: post.button || "📖 ادامه در سایت", url: post.link }]);
+  const base = { chat_id: env.CHANNEL_ID, parse_mode: "HTML", reply_markup: { inline_keyboard: kb } };
+  const usePhoto = post.img && post.text.length <= 1000;
+  const method = usePhoto ? "sendPhoto" : "sendMessage";
+  const body = usePhoto ? { ...base, photo: SITE + post.img, caption: post.text } : { ...base, text: post.text };
+  const r = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/posts") return posts();
+    if (url.pathname === "/api/test-post") {
+      if (!env.ADMIN_KEY || url.searchParams.get("key") !== env.ADMIN_KEY) return new Response("forbidden", { status: 403 });
+      const slot = Number(url.searchParams.get("slot") || 0);
+      return Response.json(await send(env, pick(slot, url.searchParams.get("i"))));
+    }
     return env.ASSETS.fetch(request);
+  },
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(send(env, pick(SLOTS[event.cron] ?? 0, null)));
   },
 };
