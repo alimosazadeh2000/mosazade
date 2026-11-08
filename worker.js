@@ -39,8 +39,11 @@ const SITE = "https://alimosazade.ir";
 
 function pick(slot, i) {
   if (i !== null && i !== "" && !isNaN(Number(i))) return POSTS[Number(i) % POSTS.length];
+  // شروع صف از ۸ نوامبر ۲۰۲۶؛ بعد از ۶۰ روز دوباره از اول
+  const START = Math.floor(Date.UTC(2026, 10, 8) / 86400000);
   const day = Math.floor(Date.now() / 86400000);
-  return POSTS[(day * 3 + slot) % POSTS.length];
+  const n = (day - START) * 3 + slot;
+  return POSTS[((n % POSTS.length) + POSTS.length) % POSTS.length];
 }
 
 async function send(env, post) {
