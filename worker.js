@@ -65,11 +65,21 @@ export default {
     if (url.pathname === "/api/test-post") {
       if (!env.ADMIN_KEY || url.searchParams.get("key") !== env.ADMIN_KEY) return new Response("forbidden", { status: 403 });
       const slot = Number(url.searchParams.get("slot") || 0);
-      return Response.json(await send(env, pick(slot, url.searchParams.get("i"))));
+      const post = pick(slot, url.searchParams.get("i"));
+      let res = await send(env, post);
+      if (!res.ok && post.img) res = await send(env, { ...post, img: null });
+      return Response.json(res);
     }
     return env.ASSETS.fetch(request);
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(send(env, pick(SLOTS[event.cron] ?? 0, null)));
+    ctx.waitUntil((async () => {
+      const h = new Date(event.scheduledTime).getUTCHours();
+      const slot = h < 8 ? 0 : h < 14 ? 1 : 2;
+      const post = pick(slot, null);
+      let res = await send(env, post);
+      if (!res.ok && post.img) res = await send(env, { ...post, img: null });
+      console.log("cron", event.cron, "slot", slot, JSON.stringify(res).slice(0, 300));
+    })());
   },
 };
