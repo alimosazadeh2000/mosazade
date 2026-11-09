@@ -46,13 +46,29 @@ function pick(slot, i) {
   return POSTS[((n % POSTS.length) + POSTS.length) % POSTS.length];
 }
 
+// عکس را در چند مسیر ممکن پیدا می‌کند (اگر پوشه‌ها تودرتو آپلود شده باشند)
+const BASES = ["/img/", "/img/img/", "/img/img_month2/", "/img/img_month2/img/", "/img_month2/", "/img_month2/img/", "/img/img_month1/", "/img_month1/"];
+async function findImg(env, path) {
+  const name = path.split("/").pop();
+  for (const b of BASES) {
+    try {
+      const r = await env.ASSETS.fetch(new Request(SITE + b + name));
+      const ok = r.ok && (r.headers.get("content-type") || "").startsWith("image");
+      if (r.body) await r.body.cancel();
+      if (ok) return SITE + b + name;
+    } catch (e) {}
+  }
+  return null;
+}
+
 async function send(env, post) {
   const kb = [[{ text: "📩 مشاوره در تلگرام", url: "https://t.me/moshaver_tahsiil" }]];
   if (post.link) kb.unshift([{ text: post.button || "📖 ادامه در سایت", url: post.link }]);
   const base = { chat_id: env.CHANNEL_ID, parse_mode: "HTML", reply_markup: { inline_keyboard: kb } };
-  const usePhoto = post.img && post.text.length <= 1000;
+  const imgUrl = post.img ? await findImg(env, post.img) : null;
+  const usePhoto = imgUrl && post.text.length <= 1000;
   const method = usePhoto ? "sendPhoto" : "sendMessage";
-  const body = usePhoto ? { ...base, photo: SITE + post.img, caption: post.text } : { ...base, text: post.text };
+  const body = usePhoto ? { ...base, photo: imgUrl, caption: post.text } : { ...base, text: post.text };
   const r = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
